@@ -16,12 +16,18 @@ public class Cliente {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private String id;
-    private String nomeUsuario;
+    private String loginUsuario;
+    private String nome;
+    private String sobrenome;
     private String email;
     private String telefone;
     private String cpf;
 
     public String getCpf() {
         return cpf;
+    }
+
+    public String getId() {
+        return id;
     }
 }

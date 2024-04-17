@@ -2,6 +2,7 @@ package barber.com.campestrebarberapp.domain.service;
 
 import barber.com.campestrebarberapp.domain.entity.Cliente;
 import barber.com.campestrebarberapp.domain.repository.ClienteRepository;
+import barber.com.campestrebarberapp.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +18,22 @@ public class ClienteService {
     private ClienteRepository repository;
 
     public Cliente salvar (Cliente cliente){
+        
+        Optional<Cliente> optCliente = repository.findByCpf(cliente.getCpf());
 
-        if (repository.existsByCpf(cliente.getCpf())) {
-            throw new IllegalArgumentException("O CPF já está cadastrado.");
+        boolean existeCpf = false;
+
+        if(optCliente.isPresent()){
+            if(!optCliente.get().getId().equals(cliente.getId())){
+                existeCpf = true;
+            }
+        }
+
+        if(existeCpf){
+            throw new BusinessException("Cpf já cadastrado");
         }
 
         return repository.save(cliente);
-
     }
 
     public List<Cliente> listarTodos(){
