@@ -1,5 +1,6 @@
 package barber.com.campestrebarberapp.domain.service;
 
+import barber.com.campestrebarberapp.api.response.ClienteResponse;
 import barber.com.campestrebarberapp.domain.entity.Cliente;
 import barber.com.campestrebarberapp.domain.repository.ClienteRepository;
 import barber.com.campestrebarberapp.exception.BusinessException;
@@ -36,7 +37,7 @@ public class ClienteService {
         return repository.save(cliente);
     }
 
-    public List<Cliente> listarTodos(){
+    public List<ClienteResponse> listarTodos(){
 
         return repository.findAll();
 

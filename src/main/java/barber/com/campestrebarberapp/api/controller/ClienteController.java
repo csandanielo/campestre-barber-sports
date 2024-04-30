@@ -1,5 +1,8 @@
 package barber.com.campestrebarberapp.api.controller;
 
+import barber.com.campestrebarberapp.api.mapper.ClienteMapper;
+import barber.com.campestrebarberapp.api.request.ClienteRequest;
+import barber.com.campestrebarberapp.api.response.ClienteResponse;
 import barber.com.campestrebarberapp.domain.entity.Cliente;
 import barber.com.campestrebarberapp.domain.service.ClienteService;
 import barber.com.campestrebarberapp.exception.BusinessException;
@@ -19,19 +22,21 @@ public class ClienteController {
     private ClienteService service;
 
     @PostMapping
-    public ResponseEntity<Cliente> salvar (@RequestBody Cliente cliente){
+    public ResponseEntity<ClienteResponse> salvar (@RequestBody ClienteRequest request){
+        Cliente cliente = ClienteMapper.toCliente(request);
         Cliente clienteSalvo = service.salvar(cliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteSalvo);
+        ClienteResponse clienteResponse = ClienteMapper.toClienteResponse(clienteSalvo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteResponse);
     }
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> listarTodos (){
-        List<Cliente> clientes = service.listarTodos();
-        return ResponseEntity.status(HttpStatus.OK).body(clientes);
+    public ResponseEntity<List<ClienteResponse>> listarTodos (){
+        List<ClienteResponse> clienteResponses = service.listarTodos();
+        return ResponseEntity.status(HttpStatus.OK).body(clienteResponses);
 
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> buscarPorId (@PathVariable Long id){
+    public ResponseEntity<ClienteResponse> buscarPorId (@PathVariable Long id){
         Optional<Cliente> optCliente = service.buscarPorId(id);
 
         if(optCliente.isEmpty()){
@@ -39,16 +44,16 @@ public class ClienteController {
 
         }
 
-        Cliente cliente = optCliente.get();
-
-        return ResponseEntity.status(HttpStatus.OK).body(optCliente.get());
+        return ResponseEntity.status(HttpStatus.OK).body(ClienteMapper.toClienteResponse(optCliente.get()));
 
     }
 
    @PutMapping
-   public ResponseEntity<Cliente> alterar (@RequestBody Cliente cliente){
+   public ResponseEntity<ClienteResponse> alterar (@RequestBody ClienteRequest request){
+        Cliente cliente = ClienteMapper.toCliente(request);
         Cliente clienteSalvo = service.salvar(cliente);
-        return ResponseEntity.status(HttpStatus.OK).body(clienteSalvo);
+       ClienteResponse clienteResponse = ClienteMapper.toClienteResponse(clienteSalvo);
+        return ResponseEntity.status(HttpStatus.OK).body(clienteResponse);
     }
 
 
