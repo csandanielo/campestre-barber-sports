@@ -3,44 +3,31 @@ package barber.com.campestrebarberapp.api.mapper;
 import barber.com.campestrebarberapp.api.request.ClienteRequest;
 import barber.com.campestrebarberapp.api.response.ClienteResponse;
 import barber.com.campestrebarberapp.domain.entity.Cliente;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Component
+@RequiredArgsConstructor
 public class ClienteMapper {
 
-    public static Cliente toCliente (ClienteRequest clienteRequest) {
+    private final ModelMapper mapper;
 
-        Cliente cliente = new Cliente ();
-
-    cliente.setNome(clienteRequest.getNome());
-    cliente.setSobrenome(clienteRequest.getSobrenome());
-    cliente.setEmail(clienteRequest.getEmail());
-    cliente.setCpf(clienteRequest.getCpf());
-    cliente.setTelefone(clienteRequest.getTelefone());
-    cliente.setLoginUsuario(clienteRequest.getLoginUsuario());
-    return cliente;
+    public Cliente toCliente(ClienteRequest request){
+        return mapper.map(request, Cliente.class);
     }
 
-    public static ClienteResponse toClienteResponse (Cliente cliente) {
-
-        ClienteResponse response = new ClienteResponse();
-
-        response.setId(response.getId());
-        response.setNome(response.getNome());
-        response.setSobrenome(response.getSobrenome());
-        response.setEmail(response.getEmail());
-        response.setCpf(response.getCpf());
-        response.setTelefone(response.getTelefone());
-        response.setLoginUsuario(response.getLoginUsuario());
-        return response;
+    public ClienteResponse toClienteResponse(Cliente cliente){
+        return mapper.map(cliente, ClienteResponse.class);
     }
 
-    public static List<ClienteResponse> toClienteResponseList(List<Cliente> clientes) {
-        List<ClienteResponse> responses = new ArrayList<>();
-        for (Cliente cliente : clientes){
-            responses.add(toClienteResponse(cliente));
+    public  List<ClienteResponse> toClienteResponseList(List<Cliente> clientes) {
+        return clientes.stream()
+                .map(this::toClienteResponse)
+                .collect(Collectors.toList());
         }
-        return responses;
-    }
 }
