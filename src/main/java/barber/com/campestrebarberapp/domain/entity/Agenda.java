@@ -7,12 +7,12 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@Table
 @Entity
+@Table(name = "agenda")
 public class Agenda {
 
     @Id
@@ -23,9 +23,9 @@ public class Agenda {
     @Column (name = "id_barbeiro")
     private Long idBarbeiro;
     @Column (name = "data_hora")
-    private LocalDate dataAgendamento;
+    private LocalDateTime dataHoraAgendamento;
     @Column (name = "data_criacao")
-    private LocalDate dataAgenda;
+    private LocalDateTime dataAgenda;
     @ManyToOne
     private Cliente cliente;
 
